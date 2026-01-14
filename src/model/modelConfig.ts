@@ -107,17 +107,26 @@ export const FAILURE_LABELS = {
 
 // Viability index thresholds and labels
 export const VIABILITY_THRESHOLDS = [
-  { min: 80, max: 100, label: 'Viable-ish', color: '#4ade80', emoji: '✅' },
+  { min: 80, max: 101, label: 'Viable-ish', color: '#4ade80', emoji: '✅' },
   { min: 50, max: 80, label: 'Strained', color: '#facc15', emoji: '⚠️' },
   { min: 20, max: 50, label: 'Nonviable', color: '#fb923c', emoji: '🔶' },
-  { min: 0, max: 20, label: 'Catastrophic', color: '#ef4444', emoji: '💀' },
+  { min: -1, max: 20, label: 'Catastrophic', color: '#ef4444', emoji: '💀' },
 ];
 
 export const getViabilityStatus = (viability: number) => {
+  // Handle edge cases
+  if (typeof viability !== 'number' || isNaN(viability)) {
+    return VIABILITY_THRESHOLDS[0]; // Default to viable if something went wrong
+  }
+  
   for (const threshold of VIABILITY_THRESHOLDS) {
-    if (viability >= threshold.min && viability <= threshold.max) {
+    if (viability >= threshold.min && viability < threshold.max) {
       return threshold;
     }
   }
-  return VIABILITY_THRESHOLDS[VIABILITY_THRESHOLDS.length - 1];
+  // Fallback: return based on actual value
+  if (viability >= 80) return VIABILITY_THRESHOLDS[0];
+  if (viability >= 50) return VIABILITY_THRESHOLDS[1];
+  if (viability >= 20) return VIABILITY_THRESHOLDS[2];
+  return VIABILITY_THRESHOLDS[3];
 };
