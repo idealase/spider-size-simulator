@@ -1,0 +1,131 @@
+.viability-gauge {
+  background: #1e1e2e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #cdd6f4;
+}
+
+.viability-gauge h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: #f5e0dc;
+  text-align: center;
+}
+
+.gauge-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
+
+.gauge-svg {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+}
+
+.gauge-fill {
+  transition: stroke-dashoffset 0.3s ease-out, stroke 0.3s ease-out;
+}
+
+.gauge-value {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  transition: color 0.3s ease-out;
+}
+
+.gauge-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.gauge-percent {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.gauge-status {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: -10px;
+  transition: color 0.3s ease-out;
+}
+
+.failure-modes {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #45475a;
+}
+
+.failure-modes h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  color: #f38ba8;
+}
+
+.failure-modes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.failure-item {
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background: rgba(243, 139, 168, 0.1);
+  border-left: 3px solid #f38ba8;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.85rem;
+  color: #f5c2e7;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.no-failures {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: rgba(166, 227, 161, 0.1);
+  border-radius: 8px;
+  color: #a6e3a1;
+  font-size: 0.9rem;
+}
+
+.success-icon {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .viability-gauge {
+    padding: 1rem;
+  }
+  
+  .gauge-number {
+    font-size: 2rem;
+  }
+  
+  .failure-item {
+    font-size: 0.8rem;
+  }
+}
