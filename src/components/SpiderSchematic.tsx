@@ -18,6 +18,29 @@ const formatLength = (meters: number): string => {
   }
 };
 
+// Get a real-world size reference for context
+const getSizeReference = (bodyLength: number): { icon: string; text: string } => {
+  // bodyLength is in meters
+  const mm = bodyLength * 1000;
+  const cm = bodyLength * 100;
+  
+  if (mm < 3) return { icon: '🦠', text: 'Smaller than a grain of sand' };
+  if (mm < 5) return { icon: '🔹', text: 'Size of a sesame seed' };
+  if (mm < 8) return { icon: '🍚', text: 'Size of a grain of rice' };
+  if (mm < 15) return { icon: '🐜', text: 'Size of a large ant' };
+  if (cm < 3) return { icon: '💅', text: 'Size of a fingernail' };
+  if (cm < 5) return { icon: '🪙', text: 'Size of a quarter' };
+  if (cm < 10) return { icon: '🥚', text: 'Size of a chicken egg' };
+  if (cm < 20) return { icon: '🍎', text: 'Size of an apple' };
+  if (cm < 40) return { icon: '🏀', text: 'Size of a basketball' };
+  if (cm < 60) return { icon: '🪑', text: 'Size of a chair seat' };
+  if (bodyLength < 1) return { icon: '🚪', text: 'Size of a door' };
+  if (bodyLength < 2) return { icon: '🧍', text: 'Taller than a human' };
+  if (bodyLength < 4) return { icon: '🚗', text: 'Size of a small car' };
+  if (bodyLength < 8) return { icon: '🚌', text: 'Size of a bus' };
+  return { icon: '🏠', text: 'Size of a building!' };
+};
+
 export const SpiderSchematic: React.FC<SpiderSchematicProps> = ({ 
   modelOutput, 
   bodyLength,
@@ -62,6 +85,9 @@ export const SpiderSchematic: React.FC<SpiderSchematicProps> = ({
     const mode = FAILURE_MODES[f.failureId];
     return mode?.severity === 'catastrophic' && f.isActive;
   });
+
+  // Get size reference for context
+  const sizeRef = getSizeReference(bodyLength);
 
   return (
     <div className={`spider-schematic ${anyFailure ? 'has-failure' : ''} ${catastrophicFailure ? 'catastrophic' : ''}`}>
@@ -306,6 +332,12 @@ export const SpiderSchematic: React.FC<SpiderSchematicProps> = ({
               {catastrophicFailure ? '💀 CATASTROPHIC' : '⚠️ SYSTEM FAILURE'}
             </span>
           )}
+        </div>
+        
+        {/* Size reference comparison */}
+        <div className="size-reference">
+          <span className="size-reference-icon">{sizeRef.icon}</span>
+          <span className="size-reference-text">{sizeRef.text}</span>
         </div>
       </div>
       

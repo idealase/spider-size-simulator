@@ -132,6 +132,30 @@
   margin-top: 0.25rem;
 }
 
+/* Size reference comparison */
+.size-reference {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: rgba(137, 180, 250, 0.1);
+  border: 1px solid rgba(137, 180, 250, 0.2);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.size-reference-icon {
+  font-size: 1.3rem;
+}
+
+.size-reference-text {
+  font-size: 0.85rem;
+  color: #89b4fa;
+  font-weight: 500;
+}
+
 .status-indicators {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

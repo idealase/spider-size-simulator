@@ -18,6 +18,18 @@ const formatLength = (meters: number): string => {
   }
 };
 
+const formatMass = (kg: number): string => {
+  if (kg < 0.001) {
+    return `${(kg * 1000000).toFixed(1)} mg`;
+  } else if (kg < 1) {
+    return `${(kg * 1000).toFixed(1)} g`;
+  } else if (kg < 1000) {
+    return `${kg.toFixed(1)} kg`;
+  } else {
+    return `${(kg / 1000).toFixed(1)} tonnes`;
+  }
+};
+
 const getSeverityIcon = (severity: string): string => {
   switch (severity) {
     case 'catastrophic': return '💀';
@@ -35,6 +47,71 @@ const getSubsystemIcon = (subsystem: string): string => {
     case 'locomotion': return '🚶';
     default: return '⚙️';
   }
+};
+
+// Physiological facts by subsystem
+const PHYSIOLOGY_FACTS: Record<string, { title: string; facts: string[] }> = {
+  respiration: {
+    title: 'Book Lung Anatomy',
+    facts: [
+      'Spider book lungs contain 15-20 leaf-like plates called lamellae',
+      'Each lamella is only 0.2-0.3 μm thick—thinner than a human hair',
+      'Oxygen diffuses directly into hemolymph without hemoglobin binding',
+      'Maximum diffusion distance in real spiders: ~1mm (any further = hypoxia)',
+      'Carboniferous insects grew huge because O₂ was 35% (vs 21% today)',
+    ],
+  },
+  hydraulics: {
+    title: 'Hydraulic System Anatomy',
+    facts: [
+      'Spiders have no extensor muscles in their legs—only flexors',
+      'Leg extension requires 60-100 mmHg hemolymph pressure',
+      'The prosoma (cephalothorax) acts as a hydraulic pump',
+      'Dead spiders curl up because hydraulic pressure is lost',
+      'Some jumping spiders generate 8× their body weight in leg force',
+    ],
+  },
+  exoskeleton: {
+    title: 'Cuticle Structure',
+    facts: [
+      'Spider cuticle is made of chitin fibers in a protein matrix',
+      'Cuticle thickness: typically 1-10% of body segment diameter',
+      'Tensile strength: ~100 MPa (similar to aluminum)',
+      'Must be shed (molted) for growth—extremely vulnerable during',
+      'Largest known spider (Goliath birdeater): 30cm leg span, 175g',
+    ],
+  },
+  locomotion: {
+    title: 'Movement Energetics',
+    facts: [
+      'Spiders use ~10× less energy per step than same-sized mammals',
+      'Metabolic rate scales as mass^0.75 (Kleiber\'s Law)',
+      'Maximum sprint speed: ~0.5 m/s for large tarantulas',
+      'Jumping spiders can leap 50× their body length',
+      'Energy cost of locomotion rises exponentially with body mass',
+    ],
+  },
+};
+
+// Size comparisons
+const getSizeComparison = (meters: number): string => {
+  if (meters < 0.01) return 'Size of a grain of rice';
+  if (meters < 0.03) return 'Size of a thumbnail';
+  if (meters < 0.1) return 'Size of a mouse';
+  if (meters < 0.3) return 'Size of a house cat';
+  if (meters < 0.5) return 'Size of a medium dog';
+  if (meters < 1.0) return 'Size of a German Shepherd';
+  if (meters < 1.5) return 'Size of a large wolf';
+  if (meters < 2.0) return 'Size of a lion';
+  if (meters < 2.5) return 'Size of a horse';
+  return 'Size of an elephant 🐘';
+};
+
+// Estimated mass (assuming spider density ~1.1 g/cm³ and ~40% of bounding box)
+const estimateMass = (bodyLength: number): number => {
+  const volume = Math.pow(bodyLength, 3) * 0.4; // Approximate body volume
+  const density = 1100; // kg/m³
+  return volume * density;
 };
 
 export const FailureEventModal: React.FC<FailureEventModalProps> = ({
@@ -60,6 +137,10 @@ export const FailureEventModal: React.FC<FailureEventModalProps> = ({
 
   const failureMode: FailureModeDefinition | undefined = FAILURE_MODES[failureEvent.failureId];
   if (!failureMode) return null;
+
+  const physiologyFacts = PHYSIOLOGY_FACTS[failureMode.subsystem];
+  const estimatedMass = estimateMass(failureEvent.triggeredAtSize);
+  const sizeComparison = getSizeComparison(failureEvent.triggeredAtSize);
 
   const handleClose = () => {
     if (showDontShowAgain && onDontShowAgain) {
@@ -115,12 +196,22 @@ export const FailureEventModal: React.FC<FailureEventModalProps> = ({
             <span className="trigger-value">{failureEvent.triggeredAtScale.toFixed(1)}×</span>
           </div>
           <div className="trigger-stat">
+            <span className="trigger-label">Est. Mass</span>
+            <span className="trigger-value">{formatMass(estimatedMass)}</span>
+          </div>
+          <div className="trigger-stat">
             <span className="trigger-label">Status</span>
             <span className={`trigger-value status-${failureMode.severity}`}>
               {failureMode.severity === 'catastrophic' ? 'IRREVERSIBLE' : 
                failureMode.severity === 'hard' ? 'LATCHED' : 'RECOVERABLE'}
             </span>
           </div>
+        </div>
+
+        {/* Size comparison */}
+        <div className="size-comparison">
+          <span className="comparison-icon">📏</span>
+          <span className="comparison-text">{sizeComparison}</span>
         </div>
 
         {/* Short description */}
@@ -173,6 +264,18 @@ export const FailureEventModal: React.FC<FailureEventModalProps> = ({
               <strong>Recovery Possibility:</strong>
               <p>{failureMode.recoveryHint}</p>
             </div>
+          </div>
+        )}
+
+        {/* Physiological facts */}
+        {physiologyFacts && (
+          <div className="physiology-facts">
+            <h4>🔬 {physiologyFacts.title}</h4>
+            <ul>
+              {physiologyFacts.facts.map((fact, idx) => (
+                <li key={idx}>{fact}</li>
+              ))}
+            </ul>
           </div>
         )}
 

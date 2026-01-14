@@ -20,6 +20,8 @@ interface ControlsPanelProps {
   mode: ModelMode;
   setMode: (mode: ModelMode) => void;
   onShowAssumptions: () => void;
+  onReviveSpider?: () => void;
+  hasFailures?: boolean;
 }
 
 const formatLength = (meters: number): string => {
@@ -57,6 +59,8 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
   mode,
   setMode,
   onShowAssumptions,
+  onReviveSpider,
+  hasFailures = false,
 }) => {
   const handleSizeSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sliderValue = parseFloat(e.target.value);
@@ -177,6 +181,16 @@ export const ControlsPanel: React.FC<ControlsPanelProps> = ({
       >
         📖 View Assumptions & Equations
       </button>
+
+      {hasFailures && onReviveSpider && (
+        <button 
+          className="revive-button"
+          onClick={onReviveSpider}
+          type="button"
+        >
+          🔄 Revive Spider
+        </button>
+      )}
     </div>
   );
 };

@@ -22,6 +22,7 @@ import {
   FailureEventModal,
   FailureStatePanel,
 } from './components';
+import { FunFactsPanel } from './components/FunFactsPanel';
 import './App.css';
 
 type ChartTab = 'health' | 'scaling' | 'threshold';
@@ -125,6 +126,15 @@ function App() {
     setSelectedFailure(null);
   }, []);
 
+  // Revive spider - reset to baseline size and clear failures
+  const reviveSpider = useCallback(() => {
+    setBodyLength(preset.baselineLength);
+    setFailureHistory([]);
+    setSuppressedFailures(new Set());
+    setO2Fraction(ENV_DEFAULTS.o2Fraction);
+    setGravityMultiplier(ENV_DEFAULTS.gravityMultiplier);
+  }, [preset.baselineLength]);
+
   // Get active failures for visualization
   const activeFailures = useMemo(() => 
     failureHistory.filter(f => f.isActive),
@@ -154,6 +164,8 @@ function App() {
             mode={mode}
             setMode={setMode}
             onShowAssumptions={() => setShowAssumptions(true)}
+            onReviveSpider={reviveSpider}
+            hasFailures={failureHistory.length > 0}
           />
           <ViabilityGauge modelOutput={modelOutput} />
           
@@ -171,6 +183,12 @@ function App() {
             modelOutput={modelOutput} 
             bodyLength={bodyLength}
             activeFailures={activeFailures}
+          />
+          
+          {/* Fun Facts Panel */}
+          <FunFactsPanel 
+            modelOutput={modelOutput}
+            bodyLength={bodyLength}
           />
         </div>
 
