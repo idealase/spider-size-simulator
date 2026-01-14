@@ -1,18 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import { ModelOutput } from '../../model';
+import { ModelOutput, FailurePoint } from '../../model';
 import './Charts.css';
 
 interface SubsystemHealthChartProps {
   modelOutputs: ModelOutput[];
   sizes: number[];
   currentSize: number;
+  failurePoints?: FailurePoint[];
 }
 
 export const SubsystemHealthChart: React.FC<SubsystemHealthChartProps> = ({
   modelOutputs,
   sizes,
   currentSize,
+  failurePoints = [],
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -59,6 +61,37 @@ export const SubsystemHealthChart: React.FC<SubsystemHealthChartProps> = ({
       )
       .style('stroke-dasharray', '3,3')
       .style('stroke-opacity', 0.2);
+
+    // Draw failure point vertical lines
+    const failureColors: Record<string, string> = {
+      'respiration': '#f38ba8',
+      'hydraulics': '#facc15',
+      'exoskeleton': '#fab387',
+      'locomotion': '#89b4fa',
+    };
+
+    failurePoints.forEach((fp) => {
+      if (fp.sizeAtFailure >= sizes[0] && fp.sizeAtFailure <= sizes[sizes.length - 1]) {
+        // Vertical line at failure point
+        g.append('line')
+          .attr('x1', xScale(fp.sizeAtFailure))
+          .attr('x2', xScale(fp.sizeAtFailure))
+          .attr('y1', 0)
+          .attr('y2', height)
+          .attr('stroke', failureColors[fp.subsystem] || '#dc2626')
+          .attr('stroke-width', 2)
+          .attr('stroke-dasharray', '8,4')
+          .attr('opacity', 0.6);
+
+        // Failure marker (skull icon)
+        g.append('text')
+          .attr('x', xScale(fp.sizeAtFailure))
+          .attr('y', -5)
+          .attr('text-anchor', 'middle')
+          .attr('font-size', '12px')
+          .text('💀');
+      }
+    });
 
     // Axes
     g.append('g')
@@ -174,7 +207,7 @@ export const SubsystemHealthChart: React.FC<SubsystemHealthChartProps> = ({
         .text(key.charAt(0).toUpperCase() + key.slice(1));
     });
 
-  }, [modelOutputs, sizes, currentSize]);
+  }, [modelOutputs, sizes, currentSize, failurePoints]);
 
   return (
     <div className="chart-container">

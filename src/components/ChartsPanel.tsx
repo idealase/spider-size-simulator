@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelOutput } from '../model';
+import { ModelOutput, FailurePoint } from '../model';
 import { SubsystemHealthChart, ScalingLawsChart, FailureThresholdChart } from './charts';
 import './ChartsPanel.css';
 
@@ -11,6 +11,7 @@ interface ChartsPanelProps {
   currentSize: number;
   activeTab: ChartTab;
   setActiveTab: (tab: ChartTab) => void;
+  failurePoints?: FailurePoint[];
 }
 
 export const ChartsPanel: React.FC<ChartsPanelProps> = ({
@@ -19,6 +20,7 @@ export const ChartsPanel: React.FC<ChartsPanelProps> = ({
   currentSize,
   activeTab,
   setActiveTab,
+  failurePoints = [],
 }) => {
   const tabs: { id: ChartTab; label: string; emoji: string }[] = [
     { id: 'health', label: 'Subsystem Health', emoji: '❤️' },
@@ -48,6 +50,7 @@ export const ChartsPanel: React.FC<ChartsPanelProps> = ({
             modelOutputs={modelOutputs}
             sizes={sizes}
             currentSize={currentSize}
+            failurePoints={failurePoints}
           />
         )}
         {activeTab === 'scaling' && (
@@ -55,6 +58,7 @@ export const ChartsPanel: React.FC<ChartsPanelProps> = ({
             modelOutputs={modelOutputs}
             sizes={sizes}
             currentSize={currentSize}
+            failurePoints={failurePoints}
           />
         )}
         {activeTab === 'threshold' && (
@@ -62,6 +66,7 @@ export const ChartsPanel: React.FC<ChartsPanelProps> = ({
             modelOutputs={modelOutputs}
             sizes={sizes}
             currentSize={currentSize}
+            failurePoints={failurePoints}
           />
         )}
       </div>

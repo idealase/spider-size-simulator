@@ -113,6 +113,41 @@ Viability = 100 × exp(Σ wᵢ × ln(healthᵢ/100 + ε))
 
 A failure mode triggers when proxy value drops below **0.35**.
 
+## 💀 Failure Modes
+
+The simulator features **explicit failure modes** that trigger when subsystems cross critical thresholds. Each failure is a first-class entity with:
+
+### Failure Types
+
+| Failure | Subsystem | Severity | Trigger (proxy < ) |
+|---------|-----------|----------|-------------------|
+| **Oxygen Diffusion Collapse** | Respiration | Catastrophic | 0.35 |
+| **Hydraulic Extension Failure** | Hydraulics | Hard | 0.35 |
+| **Exoskeleton Buckling** | Exoskeleton | Catastrophic | 0.35 |
+| **Locomotion Energy Depletion** | Locomotion | Soft | 0.35 |
+
+### Severity Levels
+
+- **Catastrophic** 💀: Irreversible, immediately fatal. Cannot recover by shrinking.
+- **Hard** 🔴: Latches once triggered. Stays active until conditions improve.
+- **Soft** 🟡: Can resolve if spider shrinks back below threshold.
+
+### Visual Feedback
+
+When failures trigger:
+- **Spider schematic** animates the failure (collapsed legs, body sag, hypoxia overlay)
+- **Modal popup** explains the physics in detail with recovery hints
+- **Charts** show vertical markers at failure points
+- **Failure log** tracks all triggered failures with timestamps
+
+### Educational Content
+
+Each failure includes a detailed explanation covering:
+- The physics of the failure mechanism
+- Why scaling laws make this inevitable
+- What real organisms do differently
+- Recovery possibilities (if any)
+
 ## 🚀 Quick Start
 
 ### Prerequisites

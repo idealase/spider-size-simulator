@@ -184,6 +184,325 @@
   text-align: right;
 }
 
+/* ========================================
+   FAILURE STATE ANIMATIONS AND STYLES
+   ======================================== */
+
+/* Overall failure state */
+.spider-schematic.has-failure {
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.spider-schematic.catastrophic {
+  border-color: #dc2626;
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
+  animation: catastrophicPulse 1s ease-in-out infinite;
+}
+
+@keyframes catastrophicPulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(220, 38, 38, 0.8);
+  }
+}
+
+/* Failure overlay */
+.failure-overlay {
+  animation: failureFlash 0.5s ease-in-out;
+}
+
+@keyframes failureFlash {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.1; }
+}
+
+/* Respiration failure */
+.respiration-failed {
+  animation: respirationFailure 2s ease-in-out infinite;
+}
+
+@keyframes respirationFailure {
+  0%, 100% {
+    fill: #2a2a2a;
+    filter: drop-shadow(0 0 12px #dc2626);
+  }
+  50% {
+    fill: #1a1a1a;
+    filter: drop-shadow(0 0 20px #dc2626);
+  }
+}
+
+.failure-glow {
+  animation: failureGlow 1s ease-in-out infinite;
+}
+
+@keyframes failureGlow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.hypoxia-ring {
+  animation: hypoxiaRing 1.5s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes hypoxiaRing {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 20;
+  }
+}
+
+.hypoxia-text {
+  animation: hypoxiaText 1s ease-in-out infinite;
+}
+
+@keyframes hypoxiaText {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.eyes-dimmed {
+  animation: eyesDim 3s ease-in-out infinite;
+}
+
+@keyframes eyesDim {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Hydraulic failure - legs collapse */
+.spider-svg.collapsed {
+  animation: bodyDrop 0.5s ease-out forwards;
+}
+
+.legs-collapsed {
+  animation: legsCollapse 0.8s ease-out forwards;
+}
+
+@keyframes legsCollapse {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.joints-failed circle {
+  animation: jointsFailed 0.5s ease-in-out infinite;
+}
+
+@keyframes jointsFailed {
+  0%, 100% {
+    r: 5;
+  }
+  50% {
+    r: 7;
+  }
+}
+
+/* Structure/exoskeleton failure */
+.structure-failed {
+  animation: structureCreak 2s ease-in-out infinite;
+}
+
+@keyframes structureCreak {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.02) rotate(-0.5deg);
+  }
+  75% {
+    transform: scale(0.98) rotate(0.5deg);
+  }
+}
+
+.cracks-severe {
+  animation: cracksSevere 1s ease-in-out infinite;
+}
+
+@keyframes cracksSevere {
+  0%, 100% {
+    opacity: 1;
+    stroke-width: 2.5;
+  }
+  50% {
+    opacity: 0.8;
+    stroke-width: 3.5;
+  }
+}
+
+/* Locomotion failure */
+.spider-svg.exhausted {
+  animation: exhaustedTremor 0.2s ease-in-out infinite;
+}
+
+@keyframes exhaustedTremor {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(1px);
+  }
+}
+
+.legs-exhausted {
+  animation: legsExhausted 0.3s ease-in-out infinite;
+}
+
+@keyframes legsExhausted {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.tremor-line {
+  animation: tremorLine 0.3s ease-in-out infinite;
+}
+
+@keyframes tremorLine {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.energy-text {
+  animation: energyText 0.8s ease-in-out infinite;
+}
+
+@keyframes energyText {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Failure labels */
+.failure-label {
+  animation: failureLabel 0.5s ease-in-out infinite;
+  font-weight: bold;
+}
+
+@keyframes failureLabel {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Size label failure state */
+.size-label.failure-state {
+  background: linear-gradient(135deg, #450a0a, #7f1d1d);
+  border: 1px solid #dc2626;
+}
+
+.failure-badge {
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: #dc2626;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  animation: badgePulse 1s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+/* Status indicator failure state */
+.status-indicator.failed {
+  background: rgba(220, 38, 38, 0.1);
+  border-radius: 6px;
+  padding: 0.5rem;
+  border: 1px solid #dc2626;
+}
+
+.status-indicator.failed .indicator-label {
+  color: #fca5a5;
+  font-weight: bold;
+}
+
+.failed-icon {
+  margin-right: 0.25rem;
+}
+
+.failed-bar {
+  animation: failedBarPulse 1s ease-in-out infinite;
+}
+
+@keyframes failedBarPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.failure-stripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    rgba(220, 38, 38, 0.3) 3px,
+    rgba(220, 38, 38, 0.3) 6px
+  );
+  border-radius: 3px;
+}
+
+.failed-value {
+  color: #fca5a5 !important;
+  font-weight: bold;
+}
+
+.indicator-bar-container {
+  position: relative;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .spider-schematic {
     padding: 1rem;
@@ -204,5 +523,10 @@
   
   .size-value {
     font-size: 1.25rem;
+  }
+  
+  .failure-badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
   }
 }
